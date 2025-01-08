@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
+import Checkbox from "expo-checkbox";
 
 export default function VerificationScreen() {
   const [mobile, setMobile] = useState("");
@@ -84,14 +84,15 @@ export default function VerificationScreen() {
 
           {/* Consent Checkbox */}
           <View style={styles.checkboxContainer}>
-            <BouncyCheckbox
-              isChecked={isConsent}
-              onPress={(isChecked: boolean) => setIsConsent(isChecked)}
-              fillColor="#6B4EFF"
-              unfillColor="#FFFFFF"
-              text="I hereby voluntarily provide my consent to Kotak Mahindra Bank to obtain my..."
-              textStyle={styles.checkboxText}
+            <Checkbox
+              value={isConsent}
+              onValueChange={setIsConsent}
+              color={isConsent ? "#6B4EFF" : undefined}
             />
+            <Text style={styles.checkboxText}>
+              I hereby voluntarily provide my consent to Kotak Mahindra Bank to
+              obtain my... <Text style={styles.link}>Read more</Text>
+            </Text>
           </View>
 
           {/* Terms */}
@@ -172,9 +173,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "flex-start",
     marginBottom: 24,
   },
   checkboxText: {
+    flex: 1,
+    marginLeft: 8,
     fontSize: 14,
     color: "#333333",
   },
