@@ -1,14 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { Stack } from "expo-router/stack";
 
-const App = () => {
+export default function Layout() {
   return (
-    <View>
-      <Text>App</Text>
-    </View>
+    <Stack>
+      <Stack.Screen name="(app)" options={{ headerShown: false }} />
+    </Stack>
   );
-};
-
-export default App;
-
-const styles = StyleSheet.create({});
+}

@@ -1,3 +1,4 @@
+import KLogo from "@/components/Common/KLogo";
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -7,7 +8,10 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import Checkbox from "expo-checkbox";
+import { Checkbox } from "expo-checkbox";
+import { useNextStep } from "@/CustomHook/useNextStep";
+import { RenderPaths } from "@/Api/urlMapper";
+import { router } from "expo-router";
 
 export default function VerificationScreen() {
   const [mobile, setMobile] = useState("");
@@ -15,13 +19,18 @@ export default function VerificationScreen() {
   const [aadhaar, setAadhaar] = useState("");
   const [isConsent, setIsConsent] = useState(false);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+  const [errors, setErrors] = useState({
+    mobile: "",
+    pan: "",
+    aadhaar: "",
+  });
 
   // Validation functions
   const isMobileValid = (number: string) => /^[0-9]{10}$/.test(number);
   const isPanValid = (pan: string) => /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(pan);
   const isAadhaarValid = (aadhaar: string) => /^[0-9]{12}$/.test(aadhaar);
 
-  // Update button state
+  // Check if all fields are valid
   useEffect(() => {
     setIsButtonEnabled(
       isMobileValid(mobile) &&
@@ -31,8 +40,42 @@ export default function VerificationScreen() {
     );
   }, [mobile, pan, aadhaar, isConsent]);
 
+  const { nextStep, loading, error, data } = useNextStep();
+
+  const handleVerifyButton = async () => {
+    const data = await nextStep({ mobile, pan, aadhaar, isConsent });
+
+    if (data?.renderPath === RenderPaths.BASIC_DETAILS) {
+      router.push(`/${RenderPaths.BASIC_DETAILS}`);
+    }
+  };
+
+  const validateField = (field: string, value: string) => {
+    let errorMessage = "";
+    switch (field) {
+      case "mobile":
+        if (!isMobileValid(value)) {
+          errorMessage = "Please enter a valid 10-digit mobile number";
+        }
+        break;
+      case "pan":
+        if (!isPanValid(value)) {
+          errorMessage = "Please enter a valid PAN";
+        }
+        break;
+      case "aadhaar":
+        if (!isAadhaarValid(value)) {
+          errorMessage = "Please enter a valid 12-digit Aadhaar number";
+        }
+        break;
+    }
+    setErrors((prev) => ({ ...prev, [field]: errorMessage }));
+  };
+
   return (
     <ScrollView style={styles.container}>
+      <KLogo />
+
       <View style={styles.content}>
         <Text style={styles.title}>Fast, flexible and secure.</Text>
         <Text style={styles.subtitle}>Apply for a Current Account</Text>
@@ -53,10 +96,16 @@ export default function VerificationScreen() {
               placeholder="Mobile number"
               keyboardType="numeric"
               value={mobile}
-              onChangeText={setMobile}
+              onChangeText={(text) => {
+                setMobile(text);
+                validateField("mobile", text);
+              }}
               maxLength={10}
             />
           </View>
+          {errors.mobile ? (
+            <Text style={styles.errorText}>{errors.mobile}</Text>
+          ) : null}
 
           {/* PAN Input */}
           <View style={styles.inputContainer}>
@@ -64,11 +113,17 @@ export default function VerificationScreen() {
               style={styles.input}
               placeholder="PAN"
               value={pan}
-              onChangeText={setPan}
+              onChangeText={(text) => {
+                setPan(text.toUpperCase());
+                validateField("pan", text.toUpperCase());
+              }}
               autoCapitalize="characters"
               maxLength={10}
             />
           </View>
+          {errors.pan ? (
+            <Text style={styles.errorText}>{errors.pan}</Text>
+          ) : null}
 
           {/* Aadhaar Input */}
           <View style={styles.inputContainer}>
@@ -77,17 +132,23 @@ export default function VerificationScreen() {
               placeholder="Aadhaar number"
               keyboardType="numeric"
               value={aadhaar}
-              onChangeText={setAadhaar}
+              onChangeText={(text) => {
+                setAadhaar(text);
+                validateField("aadhaar", text);
+              }}
               maxLength={12}
             />
           </View>
+          {errors.aadhaar ? (
+            <Text style={styles.errorText}>{errors.aadhaar}</Text>
+          ) : null}
 
           {/* Consent Checkbox */}
           <View style={styles.checkboxContainer}>
             <Checkbox
               value={isConsent}
               onValueChange={setIsConsent}
-              color={isConsent ? "#6B4EFF" : undefined}
+              color={isConsent ? "rgb(29 78 216)" : undefined}
             />
             <Text style={styles.checkboxText}>
               I hereby voluntarily provide my consent to Kotak Mahindra Bank to
@@ -109,8 +170,9 @@ export default function VerificationScreen() {
               !isButtonEnabled && styles.verifyButtonDisabled,
             ]}
             disabled={!isButtonEnabled}
+            onPress={handleVerifyButton}
           >
-            <Text style={styles.verifyButtonText}>Verify Aadhaar</Text>
+            <Text style={styles.verifyButtonText}>Verify Aadhar</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -122,6 +184,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "rgb(250 251 252)",
+  },
+  logo: {
+    width: 120,
+    height: 40,
+    resizeMode: "contain",
+    alignSelf: "flex-start",
+    margin: 20,
   },
   content: {
     padding: 20,
@@ -159,7 +228,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E0E0E0",
     borderRadius: 8,
-    marginBottom: 16,
+    marginBottom: 8,
     alignItems: "center",
   },
   countryCode: {
@@ -183,17 +252,41 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#333333",
   },
+  actionButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 24,
+  },
+  audioButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F5F5FF",
+    padding: 12,
+    borderRadius: 8,
+  },
+  audioButtonText: {
+    color: "rgb(29 78 216)",
+    marginLeft: 4,
+  },
+  languageButton: {
+    padding: 12,
+  },
+  languageButtonText: {
+    color: "rgb(29 78 216)",
+  },
   terms: {
     fontSize: 14,
     color: "#666666",
     marginBottom: 24,
     textAlign: "center",
+    paddingHorizontal: 19,
+    marginTop: 50,
   },
   link: {
-    color: "#6B4EFF",
+    color: "rgb(29 78 216)",
   },
   verifyButton: {
-    backgroundColor: "#6B4EFF",
+    backgroundColor: "rgb(29 78 216)",
     padding: 16,
     borderRadius: 8,
     alignItems: "center",
@@ -205,5 +298,10 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "600",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginBottom: 8,
   },
 });

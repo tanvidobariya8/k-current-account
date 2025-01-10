@@ -9,22 +9,19 @@ import {
 } from "react-native";
 import React from "react";
 import AccountSelection from "@/components/current-account/AccountSelection";
-import Camera from "@/components/Common/Camera";
 import VideoScreen from "@/components/Common/VideoScreen";
 import KLogo from "@/components/Common/KLogo";
+import { useRouter } from "expo-router";
+import { RenderPaths } from "@/Api/urlMapper";
 
 const currentAccountBanner = require("@/assets/images/currentAccountBanner.png");
+const router = useRouter();
 
 const ConstitutionSelection = () => {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
+      <KLogo />
       <View style={styles.mainContainer}>
-        <KLogo />
-        {/* <Image
-          source={currentAccountBanner}
-          style={styles.currentAccountBannerImage}
-          resizeMode="cover"
-        /> */}
         <VideoScreen />
 
         <Text style={styles.currentAccountTitle}>Current Account</Text>
@@ -42,7 +39,7 @@ const ConstitutionSelection = () => {
           </Pressable>
           <Pressable
             style={[styles.customButton, styles.primaryButton]}
-            onPress={() => {}}
+            onPress={() => router.push(`/${RenderPaths.VERIFICATION}`)}
           >
             <Text style={styles.primaryButton}>Click me</Text>
           </Pressable>
