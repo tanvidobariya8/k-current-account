@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,11 +9,12 @@ import {
   Platform,
 } from "react-native";
 import { FormErrors, UserDetails } from "@/type/interface";
+import { useNextStep } from "@/CustomHook/useNextStep";
+// import CameraComponent from "@/components/Common/CameraComponent";
 
 export default function DetailsScreen() {
   const [formData, setFormData] = useState<UserDetails>({
     fullName: "",
-    dateOfBirth: "",
     maritalStatus: "",
     fatherName: "",
     motherMaidenName: "",
@@ -26,16 +27,6 @@ export default function DetailsScreen() {
 
     if (!formData.fullName) {
       newErrors.fullName = "Full name is required";
-    }
-
-    if (!formData.dateOfBirth) {
-      newErrors.dateOfBirth = "Date of birth is required";
-    } else {
-      // Basic date format validation (DD MMMM YYYY)
-      const dateRegex = /^\d{2}\s[A-Za-z]{3,}\s\d{4}$/;
-      if (!dateRegex.test(formData.dateOfBirth)) {
-        newErrors.dateOfBirth = "Invalid date format";
-      }
     }
 
     if (!formData.maritalStatus) {
@@ -54,10 +45,9 @@ export default function DetailsScreen() {
     return Object.keys(newErrors).length === 0;
   }, [formData]);
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     if (validateForm()) {
-      console.log("Form submitted:", formData);
-      // Handle form submission
+      await nextStep({ currentStep: "basic-details-submit" });
     }
   }, [formData, validateForm]);
 
@@ -65,10 +55,19 @@ export default function DetailsScreen() {
     return Object.values(formData).every((value) => value.trim() !== "");
   }, [formData]);
 
+  useEffect(() => {
+    fetchEntity();
+  }, []);
+
+  const { nextStep, loading, error, data } = useNextStep();
+  const fetchEntity = async () => {
+    await nextStep({ currentStep: "personal-basic-details" });
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Hi !</Text>
+        <Text style={styles.title}>Hi {data?.details?.entityName}!</Text>
         <Text style={styles.subtitle}>
           We'll need a few details about you to proceed.
         </Text>
@@ -84,51 +83,18 @@ export default function DetailsScreen() {
               setFormData({ ...formData, fullName: text })
             }
           />
-          {/* {formData.fullName && !errors.fullName && (
-            <Ionicons 
-              name="checkmark-circle" 
-              size={20} 
-              color="#4CAF50" 
-              style={styles.checkIcon} 
-            />
-          )} */}
         </View>
 
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            placeholder="DD MMMM YYYY"
-            value={formData.dateOfBirth}
+            placeholder="marital status"
+            value={formData.maritalStatus}
             onChangeText={(text) =>
-              setFormData({ ...formData, dateOfBirth: text })
+              setFormData({ ...formData, maritalStatus: text })
             }
           />
-          {/* {formData.dateOfBirth && !errors.dateOfBirth && (
-            <Ionicons 
-              name="checkmark-circle" 
-              size={20} 
-              color="#4CAF50" 
-              style={styles.checkIcon} 
-            />
-          )} */}
         </View>
-
-        {/* <View style={styles.pickerContainer}>
-          <Picker
-            selectedValue={formData.maritalStatus}
-            onValueChange={(value) =>
-              setFormData({ ...formData, maritalStatus: value })
-            }
-            style={styles.picker}
-            mode="dropdown"
-          >
-            <Picker.Item label="Marital Status" value="" />
-            <Picker.Item label="Single" value="single" />
-            <Picker.Item label="Married" value="married" />
-            <Picker.Item label="Divorced" value="divorced" />
-            <Picker.Item label="Widowed" value="widowed" />
-          </Picker>
-        </View> */}
 
         <View style={styles.inputContainer}>
           <TextInput
@@ -139,14 +105,6 @@ export default function DetailsScreen() {
               setFormData({ ...formData, fatherName: text })
             }
           />
-          {/* {formData.fatherName && !errors.fatherName && (
-            <Ionicons 
-              name="checkmark-circle" 
-              size={20} 
-              color="#4CAF50" 
-              style={styles.checkIcon} 
-            />
-          )} */}
         </View>
 
         <View>
@@ -159,14 +117,6 @@ export default function DetailsScreen() {
                 setFormData({ ...formData, motherMaidenName: text })
               }
             />
-            {/* {formData.motherMaidenName && !errors.motherMaidenName && (
-              <Ionicons 
-                name="checkmark-circle" 
-                size={20} 
-                color="#4CAF50" 
-                style={styles.checkIcon} 
-              />
-            )} */}
           </View>
           <Text style={styles.helperText}>
             Please note that this name will be considered as the correct

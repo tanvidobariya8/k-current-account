@@ -8,7 +8,9 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "assets": ["./assets/fonts/"],
+    "assets": [
+      "./assets/fonts/"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -35,13 +37,33 @@
       ],
       [
         "expo-video",
-       {
-        "supportsBackgroundPlayback": true,
-        "supportsPictureInPicture": true
-       }
-    ]
-  ],
-
+        {
+          "supportsBackgroundPlayback": true,
+          "supportsPictureInPicture": true
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
+        }
+      ],
+      "expo-audio"
+    ],
     "experiments": {
       "typedRoutes": true
     }

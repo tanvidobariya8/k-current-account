@@ -13,6 +13,8 @@ import VideoScreen from "@/components/Common/VideoScreen";
 import KLogo from "@/components/Common/KLogo";
 import { useRouter } from "expo-router";
 import { RenderPaths } from "@/Api/urlMapper";
+import LocalAuthComponent from "@/components/current-account/LocalAuthComponent";
+import Audio from "@/components/Common/Audio";
 
 const currentAccountBanner = require("@/assets/images/currentAccountBanner.png");
 const router = useRouter();
@@ -20,6 +22,7 @@ const router = useRouter();
 const ConstitutionSelection = () => {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
+      <LocalAuthComponent />
       <KLogo />
       <View style={styles.mainContainer}>
         <VideoScreen />

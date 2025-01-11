@@ -12,6 +12,7 @@ import { Checkbox } from "expo-checkbox";
 import { useNextStep } from "@/CustomHook/useNextStep";
 import { RenderPaths } from "@/Api/urlMapper";
 import { router } from "expo-router";
+import Audio from "@/components/Common/Audio";
 
 export default function VerificationScreen() {
   const [mobile, setMobile] = useState("");
@@ -46,7 +47,7 @@ export default function VerificationScreen() {
     const data = await nextStep({ mobile, pan, aadhaar, isConsent });
 
     if (data?.renderPath === RenderPaths.BASIC_DETAILS) {
-      router.push(`/${RenderPaths.BASIC_DETAILS}`);
+      router.push(`/${RenderPaths.ADD_BIOMETRIC}`);
     }
   };
 
@@ -175,6 +176,7 @@ export default function VerificationScreen() {
             <Text style={styles.verifyButtonText}>Verify Aadhar</Text>
           </TouchableOpacity>
         </View>
+        <Audio />
       </View>
     </ScrollView>
   );

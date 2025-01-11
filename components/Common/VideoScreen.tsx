@@ -15,15 +15,13 @@ const pause = require("@/assets/images/pasue.png");
 export default function VideoScreen() {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  useEffect(() => {
-    player.play();
-  }, [isPlaying]);
   const player = useVideoPlayer(videoSource, (player) => {
-    player.play();
     player.loop = true;
   });
 
   const handlePlay = () => {
+    player.play();
+
     setIsPlaying(true);
   };
 

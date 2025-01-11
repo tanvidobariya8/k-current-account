@@ -1,6 +1,5 @@
 export interface UserDetails {
   fullName: string;
-  dateOfBirth: string;
   maritalStatus: string;
   fatherName: string;
   motherMaidenName: string;
