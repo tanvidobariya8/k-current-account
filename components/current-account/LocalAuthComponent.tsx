@@ -1,6 +1,6 @@
 import * as LocalAuthentication from "expo-local-authentication";
 import { useEffect, useState } from "react";
-import { Alert } from "react-native";
+import { Alert, View } from "react-native";
 
 const LocalAuthComponent = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -20,14 +20,6 @@ const LocalAuthComponent = () => {
     const hasHardware = await LocalAuthentication.hasHardwareAsync();
     const supportedAuthTypes =
       await LocalAuthentication.supportedAuthenticationTypesAsync();
-
-    const typeLabels = supportedAuthTypes.map((type) =>
-      type === LocalAuthentication.AuthenticationType.FINGERPRINT
-        ? "Fingerprint"
-        : type === LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION
-        ? "Face Recognition"
-        : "Passcode"
-    );
 
     if (!hasHardware) {
       Alert.alert(
@@ -66,7 +58,7 @@ const LocalAuthComponent = () => {
       Alert.alert("Error", "An error occurred during authentication.");
     }
   };
-  return <div></div>;
+  return <View></View>;
 };
 
 export default LocalAuthComponent;

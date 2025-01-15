@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
+import { FontAwesome } from "@expo/vector-icons";
 
 const AccountSelection = () => {
   const [journey, setJourney] = useState<number | null>(null);
@@ -34,12 +35,11 @@ const AccountSelection = () => {
             </View>
             <View style={styles.iconContainer}>
               {journey === ele.id && (
-                // <FontAwesome
-                //   name={"check-circle"}
-                //   size={24}
-                //   color={"rgb(29 78 216)"}
-                // />
-                <></>
+                <FontAwesome
+                  name={"check-circle"}
+                  size={24}
+                  color={"rgb(29 78 216)"}
+                />
               )}
             </View>
           </View>

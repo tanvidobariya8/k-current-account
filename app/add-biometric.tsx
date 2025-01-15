@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 
 const AddBiometric = () => {
@@ -14,6 +14,7 @@ const AddBiometric = () => {
         <Text style={styles.buttonText}>Confirm details</Text>
       </TouchableOpacity> */}
       {/* <CameraComponent /> */}
+      <Button onPress={() => {}} title="capture boimetric" />
     </View>
   );
 };

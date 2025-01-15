@@ -14,14 +14,12 @@ import KLogo from "@/components/Common/KLogo";
 import { useRouter } from "expo-router";
 import { RenderPaths } from "@/Api/urlMapper";
 import LocalAuthComponent from "@/components/current-account/LocalAuthComponent";
-import Audio from "@/components/Common/Audio";
-
-const currentAccountBanner = require("@/assets/images/currentAccountBanner.png");
-const router = useRouter();
 
 const ConstitutionSelection = () => {
+  const router = useRouter();
+
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
+    <ScrollView style={{ flex: 1, backgroundColor: "white", marginTop: 50 }}>
       <LocalAuthComponent />
       <KLogo />
       <View style={styles.mainContainer}>
@@ -93,6 +91,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "flex-start",
     paddingVertical: 10,
+    marginTop: 50,
   },
   customButton: {
     marginHorizontal: 5,
