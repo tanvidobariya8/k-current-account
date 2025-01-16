@@ -6,7 +6,7 @@ export default function Layout() {
       <Stack.Screen
         name="constitution-selection"
         options={{
-          headerShown: false,
+          headerShown: true,
         }}
       />
       {/* <Stack.Screen

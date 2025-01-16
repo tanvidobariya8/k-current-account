@@ -7,15 +7,13 @@ import {
   ScrollView,
   StyleSheet,
   Button,
-  InputAccessoryView,
-  TouchableOpacity,
 } from "react-native";
 import { Checkbox } from "expo-checkbox";
 import { useNextStep } from "@/CustomHook/useNextStep";
 import { RenderPaths } from "@/Api/urlMapper";
-import { router } from "expo-router";
 import ConsentModal from "../components/Common/AudioConsent";
 import { Picker } from "@react-native-picker/picker";
+import { useRouter } from "expo-router";
 
 const consentLanguages = [
   {
@@ -164,6 +162,7 @@ const consentLanguages = [
 ];
 
 export default function VerificationScreen() {
+  const router = useRouter();
   const [mobile, setMobile] = useState("");
   const [pan, setPan] = useState("");
   const [aadhaar, setAadhaar] = useState("");
@@ -196,8 +195,8 @@ export default function VerificationScreen() {
   const handleVerifyButton = async () => {
     const data = await nextStep({ mobile, pan, aadhaar, isConsent });
 
-    if (data?.renderPath === RenderPaths.BASIC_DETAILS) {
-      router.push(`/${RenderPaths.ADD_BIOMETRIC}`);
+    if (data?.renderPath === RenderPaths.ADD_BIOMETRIC) {
+      router.push("/add-biometric");
     }
   };
 
@@ -354,19 +353,12 @@ export default function VerificationScreen() {
               <Text style={styles.link}>Privacy policy</Text>.
             </Text>
           </View>
-
-          {/* Verify Button */}
-          <TouchableOpacity
-            style={[
-              styles.verifyButton,
-              !isButtonEnabled && styles.verifyButtonDisabled,
-            ]}
-            disabled={!isButtonEnabled}
-            onPress={handleVerifyButton}
-          >
-            <Text style={styles.verifyButtonText}>Verify Aadhar</Text>
-          </TouchableOpacity>
         </View>
+        <Button
+          title="Verify Aadhar"
+          disabled={!isButtonEnabled}
+          onPress={handleVerifyButton}
+        />
       </ScrollView>
     </ScrollView>
   );
@@ -444,28 +436,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#333333",
   },
-  actionButtons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 24,
-  },
-  audioButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#F5F5FF",
-    padding: 12,
-    borderRadius: 8,
-  },
-  audioButtonText: {
-    color: "rgb(29 78 216)",
-    marginLeft: 4,
-  },
-  languageButton: {
-    padding: 12,
-  },
-  languageButtonText: {
-    color: "rgb(29 78 216)",
-  },
+
   terms: {
     fontSize: 14,
     color: "#666666",
@@ -483,20 +454,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     marginBottom: 10,
-  },
-  verifyButton: {
-    backgroundColor: "rgb(29 78 216)",
-    padding: 16,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  verifyButtonDisabled: {
-    backgroundColor: "#E0E0E0",
-  },
-  verifyButtonText: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    fontWeight: "600",
   },
   errorText: {
     color: "red",

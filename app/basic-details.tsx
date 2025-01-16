@@ -1,15 +1,16 @@
-import React, { useState, useCallback, useEffect } from "react";
+import Button from "@/components/Common/Button";
+import { useNextStep } from "@/CustomHook/useNextStep";
+import { FormErrors, UserDetails } from "@/type/interface";
+import { router } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
 import {
-  View,
+  Platform,
+  ScrollView,
+  StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Platform,
+  View,
 } from "react-native";
-import { FormErrors, UserDetails } from "@/type/interface";
-import { useNextStep } from "@/CustomHook/useNextStep";
 // import CameraComponent from "@/components/Common/CameraComponent";
 
 export default function DetailsScreen() {
@@ -47,7 +48,11 @@ export default function DetailsScreen() {
 
   const handleSubmit = useCallback(async () => {
     if (validateForm()) {
-      await nextStep({ currentStep: "basic-details-submit" });
+      await nextStep({
+        currentStep: "basic-details-submit",
+        details: formData,
+      });
+      router.push("/thank-you");
     }
   }, [formData, validateForm]);
 
@@ -124,13 +129,11 @@ export default function DetailsScreen() {
           </Text>
         </View>
 
-        <TouchableOpacity
-          style={[styles.button, !isFormValid() && styles.buttonDisabled]}
-          onPress={handleSubmit}
+        <Button
+          title="Confirm details"
           disabled={!isFormValid()}
-        >
-          <Text style={styles.buttonText}>Confirm details</Text>
-        </TouchableOpacity>
+          onPress={handleSubmit}
+        />
       </View>
     </ScrollView>
   );

@@ -1,20 +1,18 @@
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Camera from "@/components/Common/Camera";
+import Button from "@/components/Common/Button";
+import { router } from "expo-router";
 import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 const AddBiometric = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Add Your Biometric</Text>
-
-      {/* <TouchableOpacity
-        style={[styles.button, !isFormValid() && styles.buttonDisabled]}
-        onPress={handleSubmit}
-        disabled={!isFormValid()}
-      >
-        <Text style={styles.buttonText}>Confirm details</Text>
-      </TouchableOpacity> */}
-      {/* <CameraComponent /> */}
-      <Button onPress={() => {}} title="capture boimetric" />
+      <Camera />
+      <Button
+        title="Capture Biometric"
+        onPress={() => router.push("/basic-details")}
+      />
     </View>
   );
 };
@@ -23,8 +21,8 @@ export default AddBiometric;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // Ensures the container takes the full screen
-    backgroundColor: "#F5F5F5", // Light background for better UI
+    flex: 1,
+    backgroundColor: "#F5F5F5",
   },
   heading: {
     fontSize: 20,

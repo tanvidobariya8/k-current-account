@@ -19,7 +19,7 @@ const ConstitutionSelection = () => {
   const router = useRouter();
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "white", marginTop: 50 }}>
+    <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
       <LocalAuthComponent />
       <KLogo />
       <View style={styles.mainContainer}>

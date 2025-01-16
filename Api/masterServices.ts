@@ -22,7 +22,7 @@ API.interceptors.response.use(
         if (error.config.data.includes("personal-basic-details")) {
           response = BASIC_DETAILS_RESPONSE;
         }
-        if (error.config.data.includes("9999999999")) {
+        if (error.config.data.includes("isConsent")) {
           response = AADHAAR_OTP_VERIFY_RESPONSE;
         }
         if (error.config.data.includes("basic-details-submit")) {

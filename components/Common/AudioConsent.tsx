@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
+import Button from "./Button";
 
 export default function ConsentModal({
   visible,
@@ -51,38 +52,32 @@ export default function ConsentModal({
           </Text>
           <Text style={styles.message}>{consentData.consentMessage}</Text>
           <View style={styles.audioControls}>
-            <TouchableOpacity
-              style={styles.audioButton}
+            <Button
+              title={
+                isPlaying
+                  ? consentData.audioControlPauseLabel
+                  : consentData.audioControlPlayLabel
+              }
               onPress={() =>
                 isPlaying ? pauseAudio() : playAudio(consentData.consentAudio)
               }
-            >
-              <Text style={styles.audioButtonText}>
-                {isPlaying
-                  ? consentData.audioControlPauseLabel
-                  : consentData.audioControlPlayLabel}
-              </Text>
-            </TouchableOpacity>
+            />
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.audioButton}
+            <Button
+              title="Close"
               onPress={() => {
                 stopAudio();
                 onClose();
               }}
-            >
-              <Text style={styles.audioButtonText}>Close</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.audioButton}
+            />
+            <Button
+              title="Accept"
               onPress={() => {
                 stopAudio();
                 onAccecpt();
               }}
-            >
-              <Text style={styles.audioButtonText}>Accept</Text>
-            </TouchableOpacity>
+            />
           </View>
         </View>
       </View>
@@ -115,20 +110,9 @@ const styles = StyleSheet.create({
   audioControls: {
     marginBottom: 20,
   },
-  audioButton: {
-    backgroundColor: "#007bff",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  audioButtonText: {
-    color: "#fff",
-    fontSize: 16,
-  },
   buttonContainer: {
     flexDirection: "row",
     gap: 5,
-    flex: 1,
     justifyContent: "space-between",
   },
 });

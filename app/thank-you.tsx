@@ -1,6 +1,7 @@
 import React from "react";
-import { View, Text, StyleSheet, Button, Image } from "react-native";
-import { FontAwesome } from "@expo/vector-icons"; // For Expo
+import { View, Text, StyleSheet } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+import Button from "@/components/Common/Button";
 
 const ThankYouPage = () => {
   return (
@@ -18,9 +19,7 @@ const ThankYouPage = () => {
           amazing experience.
         </Text>
       </View>
-      <View style={{ width: "100%" }}>
-        <Button title="Close" />
-      </View>
+      <Button title="Close" />
     </View>
   );
 };
