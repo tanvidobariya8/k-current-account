@@ -70,6 +70,7 @@ export default function ConsentModal({
                 stopAudio();
                 onClose();
               }}
+              style={{ flex: 1 }}
             />
             <Button
               title="Accept"
@@ -77,6 +78,7 @@ export default function ConsentModal({
                 stopAudio();
                 onAccecpt();
               }}
+              style={{ flex: 1 }}
             />
           </View>
         </View>

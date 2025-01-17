@@ -4,5 +4,6 @@ export enum RenderPaths {
   BASIC_DETAILS = "basic-details",
   CAMERA = "camera",
   ADD_BIOMETRIC = "add-biometric",
+  DECLARATION = "declaration",
   THANK_YOU = "thank-you",
 }

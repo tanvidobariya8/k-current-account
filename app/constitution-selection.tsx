@@ -1,26 +1,16 @@
-import {
-  Button,
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import React from "react";
-import AccountSelection from "@/components/current-account/AccountSelection";
-import VideoScreen from "@/components/Common/VideoScreen";
-import KLogo from "@/components/Common/KLogo";
-import { useRouter } from "expo-router";
 import { RenderPaths } from "@/Api/urlMapper";
-import LocalAuthComponent from "@/components/current-account/LocalAuthComponent";
+import KLogo from "@/components/Common/KLogo";
+import VideoScreen from "@/components/Common/VideoScreen";
+import AccountSelection from "@/components/current-account/AccountSelection";
+import { useRouter } from "expo-router";
+import React from "react";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 const ConstitutionSelection = () => {
   const router = useRouter();
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
-      <LocalAuthComponent />
       <KLogo />
       <View style={styles.mainContainer}>
         <VideoScreen />
@@ -44,6 +34,7 @@ const ConstitutionSelection = () => {
           >
             <Text style={styles.primaryButton}>Click me</Text>
           </Pressable>
+          {/* <BarCode /> */}
         </View>
       </View>
     </ScrollView>

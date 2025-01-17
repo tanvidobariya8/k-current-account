@@ -1,5 +1,5 @@
 {
-  "name": "awesomeproject",
+  "name": "current-account",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -26,6 +26,7 @@
     "expo": "~52.0.11",
     "expo-audio": "~0.3.2",
     "expo-av": "^15.0.1",
+    "expo-barcode-scanner": "^13.0.1",
     "expo-blur": "~14.0.1",
     "expo-camera": "~16.0.10",
     "expo-checkbox": "^4.0.0",

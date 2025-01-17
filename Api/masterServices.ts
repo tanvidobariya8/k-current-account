@@ -28,6 +28,9 @@ API.interceptors.response.use(
         if (error.config.data.includes("basic-details-submit")) {
           response = BASIC_DETAILS_SUBMIT_RESPONSE;
         }
+      // if (error.config.data.includes("Aadhaar-consent")) {
+      //   response = CONSENT_LANGUAGE_RESPONSE;
+      // }
       default:
         console.log("No Matching URL");
     }

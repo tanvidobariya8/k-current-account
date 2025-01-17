@@ -52,7 +52,7 @@ export default function DetailsScreen() {
         currentStep: "basic-details-submit",
         details: formData,
       });
-      router.push("/thank-you");
+      router.push("/declaration");
     }
   }, [formData, validateForm]);
 

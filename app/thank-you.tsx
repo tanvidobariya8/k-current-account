@@ -19,7 +19,7 @@ const ThankYouPage = () => {
           amazing experience.
         </Text>
       </View>
-      <Button title="Close" />
+      <Button title="Close" style={{ width: "100%" }} />
     </View>
   );
 };
