@@ -3,17 +3,18 @@ import KLogo from "@/components/Common/KLogo";
 import VideoScreen from "@/components/Common/VideoScreen";
 import AccountSelection from "@/components/current-account/AccountSelection";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 const ConstitutionSelection = () => {
   const router = useRouter();
+  const [isPlaying, setIsPlaying] = useState(false);
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
       <KLogo />
       <View style={styles.mainContainer}>
-        <VideoScreen />
+        <VideoScreen isPlaying={isPlaying} setIsPlaying={setIsPlaying} />
 
         <Text style={styles.currentAccountTitle}>Current Account</Text>
         <Text style={styles.subtitle}>
@@ -30,7 +31,10 @@ const ConstitutionSelection = () => {
           </Pressable>
           <Pressable
             style={[styles.customButton, styles.primaryButton]}
-            onPress={() => router.push(`/${RenderPaths.VERIFICATION}`)}
+            onPress={() => {
+              setIsPlaying(false);
+              router.push(`/${RenderPaths.VERIFICATION}`);
+            }}
           >
             <Text style={styles.primaryButton}>Click me</Text>
           </Pressable>

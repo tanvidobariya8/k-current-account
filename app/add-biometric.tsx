@@ -1,6 +1,4 @@
 import Camera from "@/components/Common/Camera";
-import Button from "@/components/Common/Button";
-import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -9,10 +7,6 @@ const AddBiometric = () => {
     <View style={styles.container}>
       <Text style={styles.heading}>Add Your Biometric</Text>
       <Camera />
-      <Button
-        title="Capture Biometric"
-        onPress={() => router.push("/basic-details")}
-      />
     </View>
   );
 };
@@ -28,6 +22,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "#333",
-    marginBottom: 20,
+    textAlign: "center",
+    marginVertical: 20,
   },
 });

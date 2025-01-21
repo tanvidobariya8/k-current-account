@@ -1,71 +1,83 @@
-import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
-import { useState } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Camera, CameraView } from "expo-camera";
+import { router } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { Button, Image, Text, View } from "react-native";
+import tw from "twrnc";
 
-export default function Camera() {
-  const [facing, setFacing] = useState<CameraType>("back");
-  const [permission, requestPermission] = useCameraPermissions();
+const BiometricCamera: React.FC = () => {
+  const [facing, setFacing] = useState<"front" | "back">("front");
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [cameraRef, setCameraRef] = useState<any | null>(null);
+  const [frontImage, setFrontImage] = useState<string | null>(null);
 
-  if (!permission) {
-    // Camera permissions are still loading.
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
+  if (hasPermission === null) {
     return <View />;
   }
 
-  if (!permission.granted) {
-    // Camera permissions are not granted yet.
+  if (hasPermission === false) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.message}>
-          We need your permission to show the camera
+      <View style={tw`flex-1 items-center justify-center`}>
+        <Text style={tw`text-center`}>
+          We need your permission to use the camera.
         </Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Button
+          title="Grant Permission"
+          onPress={async () => {
+            const { status } = await Camera.requestCameraPermissionsAsync();
+            setHasPermission(status === "granted");
+          }}
+        />
       </View>
     );
   }
 
-  function toggleCameraFacing() {
+  const toggleCameraFacing = () => {
     setFacing((current) => (current === "back" ? "front" : "back"));
-  }
+  };
+  const captureImage = async () => {
+    if (cameraRef) {
+      const photo = await cameraRef.takePictureAsync({ base64: true });
+      setFrontImage(photo.uri);
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
-        </View>
-      </CameraView>
+    <View style={tw`flex-1`}>
+      {!frontImage ? (
+        <CameraView
+          style={tw`flex-1`}
+          facing={facing}
+          ref={(ref) => setCameraRef(ref)}
+        >
+          <View style={tw`absolute bottom-0 w-full p-4 bg-black bg-opacity-50`}>
+            <View style={tw`flex-row justify-between items-center`}>
+              <Button title="Flip Camera" onPress={toggleCameraFacing} />
+
+              <Button title="Capture" onPress={captureImage} />
+            </View>
+          </View>
+        </CameraView>
+      ) : (
+        <>
+          <Image
+            source={{ uri: frontImage }}
+            style={tw`w-auto h-4/5 border-2 border-blue-500 m-5`}
+          />
+          <Button
+            title="Proceed with Biometric"
+            onPress={() => router.push("/basic-details")}
+          />
+        </>
+      )}
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  message: {
-    textAlign: "center",
-    paddingBottom: 10,
-  },
-  camera: {
-    flex: 1,
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: "row",
-    backgroundColor: "transparent",
-    margin: 64,
-  },
-  button: {
-    flex: 1,
-    alignSelf: "flex-end",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
-  },
-});
+export default BiometricCamera;
