@@ -39,11 +39,11 @@ const ThankYouPage: React.FC = () => {
           amazing experience.
         </Text>
       </View>
-      <Button
+      {/* <Button
         title="Open Bank App"
-        onPress={openBankApp}
+        // onPress={openBankApp}
         style={{ width: "100%" }}
-      />
+      /> */}
     </View>
   );
 };

@@ -1,5 +1,5 @@
 export enum RenderPaths {
-  CONSTITUTION_SELECTION = "constitution-selection",
+  CONSTITUTION_SELECTION = "account-selection",
   VERIFICATION = "verification",
   BASIC_DETAILS = "basic-details",
   CAMERA = "camera",
